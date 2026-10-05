@@ -6,10 +6,11 @@ function criar(dados){
         id:1,
         titulo:dados.titulo,
         prioridade:dados.prioridade,
+        especialidade:dados.especialidade,
         status:"aberto"
     }
 
-    chamado.responsavel = suporteN1(chamado);
+    chamado.responsavel = suporteN1(chamado);    
 
     console.log("3 - SERVICE criou", chamado);
     return chamado;

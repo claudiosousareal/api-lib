@@ -1,0 +1,7 @@
+{
+    "id": 1,
+    "titulo": "Problema de conexão com o servidor",
+    "prioridade": "media",
+    "especialidade": "redes",
+    "status": "aberto"
+}
