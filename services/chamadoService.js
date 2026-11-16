@@ -1,18 +1,54 @@
-const { suporteN1 } = require('../handlers/suporteHandler')
+const { suporteN1 } = require('../handlers/suporteHandler');
 
-function criar(dados){
+const chamadoRepository = require(
+    '../repositories/chamadoRepository'
+);
+
+function criar(dados) {
     console.log("2 - SERVICE recebeu!", dados);
-    const chamado = {
-        id:1,
-        titulo:dados.titulo,
-        prioridade:dados.prioridade,
-        especialidade:dados.especialidade,
-        status:"aberto"
+
+    const prioridades = ["normal", "media", "alta"];
+
+    if (!dados || !prioridades.includes(dados.prioridade)) {
+        throw new Error("Prioridade inválida.");
     }
 
-    chamado.responsavel = suporteN1(chamado);    
+    if (!dados.titulo || !dados.especialidade) {
+        throw new Error(
+            "Título e especialidade são obrigatórios."
+        );
+    }
 
-    console.log("3 - SERVICE criou", chamado);
-    return chamado;
+    const chamado = {
+        titulo: dados.titulo,
+        prioridade: dados.prioridade,
+        especialidade: dados.especialidade,
+        status: "aberto"
+    };
+
+    chamado.responsavel = suporteN1(chamado);
+
+    if (!chamado.responsavel) {
+        throw new Error(
+            "Nenhum técnico encontrado para a especialidade."
+        );
+    }
+
+    console.log("3 - SERVICE criou:", chamado);
+
+    return chamadoRepository.salvar(chamado);
 }
-module.exports = { criar }
+
+function listar() {
+    return chamadoRepository.listar();
+}
+
+function buscarPorId(id) {
+    return chamadoRepository.buscarPorId(id);
+}
+
+module.exports = {
+    criar,
+    listar,
+    buscarPorId
+};
